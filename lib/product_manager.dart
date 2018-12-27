@@ -7,7 +7,7 @@ class ProductManager extends StatefulWidget {
 
   final String startingProduct;
 
-  ProductManager({this.startingProduct = 'Sweets Tester'});
+  ProductManager({this.startingProduct});
 
   @override
   State createState() {
@@ -20,7 +20,9 @@ class _ProductManagerState extends State<ProductManager> {
 
   @override
   void initState() {
-    this._products.add(widget.startingProduct);
+    if(widget.startingProduct != null){
+      this._products.add(widget.startingProduct);
+    }
     super.initState();
   }
 
@@ -33,13 +35,14 @@ class _ProductManagerState extends State<ProductManager> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: <Widget>[
+      children: [
         Container(
           margin: EdgeInsets.all(10.0),
           child: ProductControl(_addProduct)
         ),
-        Products(_products)
-      ],
+        //Container(height: 350, child: Products(_products))
+        Expanded(child: Products(_products))
+      ]
     );
   }
 }
