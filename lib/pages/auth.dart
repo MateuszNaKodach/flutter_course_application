@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_course_application/main.dart';
 import 'package:flutter_course_application/pages/products.dart';
 
 class AuthPage extends StatelessWidget {
@@ -14,7 +15,6 @@ class AuthPage extends StatelessWidget {
   }
 
   _navigateToProductsPage(BuildContext context) {
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (BuildContext context) => ProductsPage()));
+    Navigator.pushReplacementNamed(context, Routes.ROOT);
   }
 }

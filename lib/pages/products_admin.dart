@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_course_application/main.dart';
 import 'package:flutter_course_application/pages/product_create.dart';
 import 'package:flutter_course_application/pages/product_list.dart';
 import 'package:flutter_course_application/pages/products.dart';
@@ -26,12 +27,7 @@ class ProductsAdminPage extends StatelessWidget {
   }
 
   Widget _buildPageBody(BuildContext context) {
-    return TabBarView(
-      children: [
-        ProductCreatePage(),
-        ProductListPage()
-      ]
-    );
+    return TabBarView(children: [ProductCreatePage(), ProductListPage()]);
   }
 
   Widget _buildNavigationDrawer(BuildContext context) {
@@ -45,7 +41,6 @@ class ProductsAdminPage extends StatelessWidget {
   }
 
   void _navigateToProductsPage(BuildContext context) {
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (BuildContext context) => ProductsPage()));
+    Navigator.pushReplacementNamed(context, Routes.ROOT);
   }
 }

@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_course_application/pages/products_admin.dart';
+import 'package:flutter_course_application/main.dart';
 import 'package:flutter_course_application/product_manager.dart';
 
 class ProductsPage extends StatelessWidget {
+  final List<Map<String,String>> products;
+  final Function addProduct;
+  final Function deleteProduct;
+
+  ProductsPage(this.products, this.addProduct, this.deleteProduct);
+
   @override
   Widget build(BuildContext context) => Scaffold(
       drawer: _buildNavigationDrawer(context),
       appBar: AppBar(title: Text('EasyList')),
-      body: ProductManager());
+      body: ProductManager(this.products, this.addProduct, this.deleteProduct));
 
   Widget _buildNavigationDrawer(BuildContext context) {
     return Drawer(child: Column(
@@ -19,6 +25,6 @@ class ProductsPage extends StatelessWidget {
   }
 
   void _navigateToProductsAdminPage(BuildContext context){
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context)=> ProductsAdminPage()));
+    Navigator.pushReplacementNamed(context, Routes.ADMIN);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_course_application/main.dart';
 import 'package:flutter_course_application/pages/product.dart';
 
 @immutable
@@ -9,14 +10,12 @@ class Products extends StatelessWidget {
   Products(this.products, {this.deleteProduct});
 
   @override
-  Widget build(BuildContext context) =>
-      products.length > 0
-          ? ListView.builder(
+  Widget build(BuildContext context) => products.length > 0
+      ? ListView.builder(
           itemCount: products.length, itemBuilder: _buildProductItem)
-          : Center(child: Text('No products found, please add some.'));
+      : Center(child: Text('No products found, please add some.'));
 
-  Widget _buildProductItem(BuildContext context, int index) =>
-      Card(
+  Widget _buildProductItem(BuildContext context, int index) => Card(
         child: Column(
           children: <Widget>[
             Image.asset(products[index]['image']),
@@ -25,14 +24,8 @@ class Products extends StatelessWidget {
               FlatButton(
                   child: Text('Details'),
                   onPressed: () =>
-                      Navigator.push<bool>(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  ProductPage(
-                                      products[index]['title'],
-                                      products[index]
-                                      ['image']))).then((bool value) {
+                      Navigator.pushNamed<bool>(context, Routes.PRODUCT(index))
+                          .then((bool value) {
                         if (value) {
                           deleteProduct(index);
                         }
