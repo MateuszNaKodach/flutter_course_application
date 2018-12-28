@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_course_application/main.dart';
+import 'package:flutter_course_application/models/product.dart';
 import 'package:flutter_course_application/product_manager.dart';
 
 class ProductsPage extends StatelessWidget {
-  final List<Map<String,String>> products;
-  final Function addProduct;
-  final Function deleteProduct;
+  final List<Product> products;
 
-  ProductsPage(this.products, this.addProduct, this.deleteProduct);
+  ProductsPage(this.products);
 
   @override
   Widget build(BuildContext context) => Scaffold(
       drawer: _buildNavigationDrawer(context),
       appBar: AppBar(title: Text('EasyList')),
-      body: ProductManager(this.products, this.addProduct, this.deleteProduct));
+      body: ProductManager(this.products));
 
   Widget _buildNavigationDrawer(BuildContext context) {
     return Drawer(child: Column(

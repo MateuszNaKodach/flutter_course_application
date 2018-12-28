@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_course_application/main.dart';
-import 'package:flutter_course_application/pages/product.dart';
+import 'package:flutter_course_application/models/product.dart';
 
 @immutable
 class Products extends StatelessWidget {
-  final List<Map<String, String>> products;
-  final Function deleteProduct;
+  final List<Product> products;
 
-  Products(this.products, {this.deleteProduct});
+  Products(this.products);
 
   @override
   Widget build(BuildContext context) => products.length > 0
@@ -18,8 +17,8 @@ class Products extends StatelessWidget {
   Widget _buildProductItem(BuildContext context, int index) => Card(
         child: Column(
           children: <Widget>[
-            Image.asset(products[index]['image']),
-            Text(products[index]['title']),
+            Image.asset(products[index].image),
+            Text(products[index].title),
             ButtonBar(alignment: MainAxisAlignment.center, children: [
               FlatButton(
                   child: Text('Details'),
@@ -27,7 +26,7 @@ class Products extends StatelessWidget {
                       Navigator.pushNamed<bool>(context, Routes.PRODUCT(index))
                           .then((bool value) {
                         if (value) {
-                          deleteProduct(index);
+                         // deleteProduct(index);
                         }
                       }))
             ])
