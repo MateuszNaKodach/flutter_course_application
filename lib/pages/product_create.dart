@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_course_application/main.dart';
 import 'package:flutter_course_application/models/product.dart';
 
 class ProductCreatePage extends StatefulWidget {
@@ -13,9 +14,9 @@ class ProductCreatePage extends StatefulWidget {
 }
 
 class _ProductCreatePageState extends State<ProductCreatePage> {
-  String titleValue;
-  String descriptionValue;
-  double priceValue;
+  String _titleValue;
+  String _descriptionValue;
+  double _priceValue;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
               autofocus: true,
               onChanged: (String value) {
                 setState(() {
-                  titleValue = value;
+                  _titleValue = value;
                 });
               }),
           TextField(
@@ -39,7 +40,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
               maxLines: 4,
               onChanged: (String value) {
                 setState(() {
-                  descriptionValue = value;
+                  _descriptionValue = value;
                 });
               }),
           TextField(
@@ -49,14 +50,20 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
               keyboardType: TextInputType.number,
               onChanged: (String value) {
                 setState(() {
-                  priceValue = double.parse(value);
+                  _priceValue = double.parse(value);
                 });
               }),
+          SizedBox(
+            height: 20.0,
+          ),
           RaisedButton(
+            color: Theme.of(context).accentColor,
+            textColor: Colors.white,
             child: Text('Save'),
             onPressed: () {
-              widget.addProduct(Product(titleValue,
-                  description: descriptionValue, price: priceValue));
+              widget.addProduct(Product(_titleValue,
+                  description: _descriptionValue, price: _priceValue));
+              Navigator.pushReplacementNamed(context, Routes.PRODUCTS);
             },
           )
         ]));

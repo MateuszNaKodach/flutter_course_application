@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_course_application/models/product.dart';
+import 'package:flutter_course_application/pages/auth.dart';
 import 'package:flutter_course_application/pages/product.dart';
 import 'package:flutter_course_application/pages/products.dart';
 import 'package:flutter_course_application/pages/products_admin.dart';
@@ -25,8 +26,8 @@ class _MyAppState extends State<MyApp> {
             accentColor: Colors.deepPurple),
         //home: AuthPage(),
         routes: {
-          Routes.ROOT: (BuildContext context) =>
-              ProductsPage(_products),
+          Routes.AUTH: (BuildContext context) => AuthPage(),
+          Routes.PRODUCTS: (BuildContext context) => ProductsPage(_products),
           Routes.ADMIN: (BuildContext context) => ProductsAdminPage(_addProduct, _deleteProduct)
         },
         onGenerateRoute: (RouteSettings settings) {
@@ -63,7 +64,8 @@ class _MyAppState extends State<MyApp> {
 }
 
 class Routes {
-  static const ROOT = '/';
+  static const AUTH = '/';
+  static const PRODUCTS = '/products';
   static const ADMIN = '/admin';
 
   static PRODUCT(final int index) => '/product/$index';

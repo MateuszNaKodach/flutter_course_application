@@ -46,6 +46,6 @@ class ProductsAdminPage extends StatelessWidget {
   }
 
   void _navigateToProductsPage(BuildContext context) {
-    Navigator.pushReplacementNamed(context, Routes.ROOT);
+    Navigator.pushReplacementNamed(context, Routes.PRODUCTS);
   }
 }
