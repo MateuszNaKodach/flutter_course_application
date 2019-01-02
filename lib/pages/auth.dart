@@ -22,6 +22,8 @@ class _AuthPageState extends State<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final double targetWidth = deviceWidth > 555.0 ? 500.0 : deviceWidth * 0.9;
     return Scaffold(
         appBar: AppBar(title: Text('Login')),
         body: Container(
@@ -29,21 +31,24 @@ class _AuthPageState extends State<AuthPage> {
             image: _buildBackgroundImage(),
           ),
           padding: EdgeInsets.all(10.0),
-          child: Container(
-            alignment: Alignment.center,
+          child: Center(
             child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  _buildEmailTextField(),
-                  SizedBox(height: 10.0),
-                  _buildPasswordTextField(),
-                  _buildAcceptTermsSwitchListTile(),
-                  SizedBox(height: 10.0),
-                  RaisedButton(
-                      color: Theme.of(context).primaryColor,
-                      child: Text('LOGIN'),
-                      onPressed: () => widget._navigateToProductsPage(context))
-                ],
+              child: Container(
+                width: targetWidth,
+                child: Column(
+                  children: [
+                    _buildEmailTextField(),
+                    SizedBox(height: 10.0),
+                    _buildPasswordTextField(),
+                    _buildAcceptTermsSwitchListTile(),
+                    SizedBox(height: 10.0),
+                    RaisedButton(
+                        color: Theme.of(context).primaryColor,
+                        child: Text('LOGIN'),
+                        onPressed: () =>
+                            widget._navigateToProductsPage(context))
+                  ],
+                ),
               ),
             ),
           ),
@@ -52,47 +57,43 @@ class _AuthPageState extends State<AuthPage> {
 
   SwitchListTile _buildAcceptTermsSwitchListTile() {
     return SwitchListTile(
-                    title: Text('Accept Terms'),
-                    value: _acceptTerms,
-                    onChanged: (bool value) {
-                      setState(() {
-                        _acceptTerms = value;
-                      });
-                    });
+        title: Text('Accept Terms'),
+        value: _acceptTerms,
+        onChanged: (bool value) {
+          setState(() {
+            _acceptTerms = value;
+          });
+        });
   }
 
   TextField _buildPasswordTextField() {
     return TextField(
-                  decoration: InputDecoration(
-                      labelText: 'Password',
-                      filled: true,
-                      fillColor: Colors.white),
-                  obscureText: true,
-                  onChanged: (String value) {
-                    _passwordValue = value;
-                  },
-                );
+      decoration: InputDecoration(
+          labelText: 'Password', filled: true, fillColor: Colors.white),
+      obscureText: true,
+      onChanged: (String value) {
+        _passwordValue = value;
+      },
+    );
   }
 
   TextField _buildEmailTextField() {
     return TextField(
-                  decoration: InputDecoration(
-                      labelText: 'E-mail',
-                      filled: true,
-                      fillColor: Colors.white),
-                  keyboardType: TextInputType.emailAddress,
-                  onChanged: (String value) {
-                    _emailValue = value;
-                  },
-                );
+      decoration: InputDecoration(
+          labelText: 'E-mail', filled: true, fillColor: Colors.white),
+      keyboardType: TextInputType.emailAddress,
+      onChanged: (String value) {
+        _emailValue = value;
+      },
+    );
   }
 
   DecorationImage _buildBackgroundImage() {
     return DecorationImage(
-            fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.3), BlendMode.dstATop),
-            image: AssetImage('assets/background.jpg'),
-          );
+      fit: BoxFit.cover,
+      colorFilter:
+          ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
+      image: AssetImage('assets/background.jpg'),
+    );
   }
 }

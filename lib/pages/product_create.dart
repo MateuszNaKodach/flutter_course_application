@@ -20,9 +20,14 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
 
   @override
   Widget build(BuildContext context) {
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.9;
+    final double targetPadding = deviceWidth - targetWidth;
     return Container(
-        margin: EdgeInsets.all(10.0),
-        child: ListView(children: [
+      margin: EdgeInsets.all(10.0),
+      child: ListView(
+        padding: EdgeInsets.symmetric(horizontal: targetPadding),
+        children: [
           _buildTitleTextField(),
           _buildDescriptionTextField(),
           _buildPriceTextField(),
@@ -35,7 +40,9 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
             child: Text('Save'),
             onPressed: () => _submitForm(context),
           )
-        ]));
+        ],
+      ),
+    );
   }
 
   void _submitForm(BuildContext context) {
