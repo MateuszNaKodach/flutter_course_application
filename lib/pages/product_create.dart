@@ -23,36 +23,9 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
     return Container(
         margin: EdgeInsets.all(10.0),
         child: ListView(children: [
-          TextField(
-              decoration: InputDecoration(
-                labelText: 'Product Title',
-              ),
-              autofocus: true,
-              onChanged: (String value) {
-                setState(() {
-                  _titleValue = value;
-                });
-              }),
-          TextField(
-              decoration: InputDecoration(
-                labelText: 'Product Description',
-              ),
-              maxLines: 4,
-              onChanged: (String value) {
-                setState(() {
-                  _descriptionValue = value;
-                });
-              }),
-          TextField(
-              decoration: InputDecoration(
-                labelText: 'Product Price',
-              ),
-              keyboardType: TextInputType.number,
-              onChanged: (String value) {
-                setState(() {
-                  _priceValue = double.parse(value);
-                });
-              }),
+          _buildTitleTextField(),
+          _buildDescriptionTextField(),
+          _buildPriceTextField(),
           SizedBox(
             height: 20.0,
           ),
@@ -60,12 +33,53 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
             color: Theme.of(context).accentColor,
             textColor: Colors.white,
             child: Text('Save'),
-            onPressed: () {
-              widget.addProduct(Product(_titleValue,
-                  description: _descriptionValue, price: _priceValue));
-              Navigator.pushReplacementNamed(context, Routes.PRODUCTS);
-            },
+            onPressed: () => _submitForm(context),
           )
         ]));
+  }
+
+  void _submitForm(BuildContext context) {
+    widget.addProduct(Product(_titleValue,
+        description: _descriptionValue, price: _priceValue));
+    Navigator.pushReplacementNamed(context, Routes.PRODUCTS);
+  }
+
+  TextField _buildPriceTextField() {
+    return TextField(
+        decoration: InputDecoration(
+          labelText: 'Product Price',
+        ),
+        keyboardType: TextInputType.number,
+        onChanged: (String value) {
+          setState(() {
+            _priceValue = double.parse(value);
+          });
+        });
+  }
+
+  TextField _buildDescriptionTextField() {
+    return TextField(
+        decoration: InputDecoration(
+          labelText: 'Product Description',
+        ),
+        maxLines: 4,
+        onChanged: (String value) {
+          setState(() {
+            _descriptionValue = value;
+          });
+        });
+  }
+
+  TextField _buildTitleTextField() {
+    return TextField(
+        decoration: InputDecoration(
+          labelText: 'Product Title',
+        ),
+        autofocus: true,
+        onChanged: (String value) {
+          setState(() {
+            _titleValue = value;
+          });
+        });
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_course_application/main.dart';
 import 'package:flutter_course_application/models/product.dart';
-import 'package:flutter_course_application/product_manager.dart';
+import 'package:flutter_course_application/widgets/products/products.dart';
 
 class ProductsPage extends StatelessWidget {
   final List<Product> products;
@@ -20,7 +20,7 @@ class ProductsPage extends StatelessWidget {
           )
         ],
       ),
-      body: ProductManager(this.products));
+      body: Products(this.products));
 
   Widget _buildNavigationDrawer(BuildContext context) {
     return Drawer(

@@ -26,47 +26,18 @@ class _AuthPageState extends State<AuthPage> {
         appBar: AppBar(title: Text('Login')),
         body: Container(
           decoration: BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.3), BlendMode.dstATop),
-              image: AssetImage('assets/background.jpg'),
-            ),
+            image: _buildBackgroundImage(),
           ),
           padding: EdgeInsets.all(10.0),
-          child: Center(
+          child: Container(
+            alignment: Alignment.center,
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  TextField(
-                    decoration: InputDecoration(
-                        labelText: 'E-mail',
-                        filled: true,
-                        fillColor: Colors.white),
-                    keyboardType: TextInputType.emailAddress,
-                    onChanged: (String value) {
-                      _emailValue = value;
-                    },
-                  ),
+                  _buildEmailTextField(),
                   SizedBox(height: 10.0),
-                  TextField(
-                    decoration: InputDecoration(
-                        labelText: 'Password',
-                        filled: true,
-                        fillColor: Colors.white),
-                    obscureText: true,
-                    onChanged: (String value) {
-                      _passwordValue = value;
-                    },
-                  ),
-                  SwitchListTile(
-                      title: Text('Accept Terms'),
-                      value: _acceptTerms,
-                      onChanged: (bool value) {
-                        setState(() {
-                          _acceptTerms = value;
-                        });
-                      }),
+                  _buildPasswordTextField(),
+                  _buildAcceptTermsSwitchListTile(),
                   SizedBox(height: 10.0),
                   RaisedButton(
                       color: Theme.of(context).primaryColor,
@@ -77,5 +48,51 @@ class _AuthPageState extends State<AuthPage> {
             ),
           ),
         ));
+  }
+
+  SwitchListTile _buildAcceptTermsSwitchListTile() {
+    return SwitchListTile(
+                    title: Text('Accept Terms'),
+                    value: _acceptTerms,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _acceptTerms = value;
+                      });
+                    });
+  }
+
+  TextField _buildPasswordTextField() {
+    return TextField(
+                  decoration: InputDecoration(
+                      labelText: 'Password',
+                      filled: true,
+                      fillColor: Colors.white),
+                  obscureText: true,
+                  onChanged: (String value) {
+                    _passwordValue = value;
+                  },
+                );
+  }
+
+  TextField _buildEmailTextField() {
+    return TextField(
+                  decoration: InputDecoration(
+                      labelText: 'E-mail',
+                      filled: true,
+                      fillColor: Colors.white),
+                  keyboardType: TextInputType.emailAddress,
+                  onChanged: (String value) {
+                    _emailValue = value;
+                  },
+                );
+  }
+
+  DecorationImage _buildBackgroundImage() {
+    return DecorationImage(
+            fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+                Colors.black.withOpacity(0.3), BlendMode.dstATop),
+            image: AssetImage('assets/background.jpg'),
+          );
   }
 }
