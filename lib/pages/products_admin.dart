@@ -4,7 +4,6 @@ import 'package:flutter_course_application/pages/product_create.dart';
 import 'package:flutter_course_application/pages/product_list.dart';
 
 class ProductsAdminPage extends StatelessWidget {
-
   final Function addProduct;
   final Function deleteProduct;
 
@@ -32,7 +31,8 @@ class ProductsAdminPage extends StatelessWidget {
   }
 
   Widget _buildPageBody(BuildContext context) {
-    return TabBarView(children: [ProductCreatePage(addProduct), ProductListPage()]);
+    return TabBarView(
+        children: [ProductCreatePage(addProduct), ProductListPage()]);
   }
 
   Widget _buildNavigationDrawer(BuildContext context) {
@@ -40,6 +40,7 @@ class ProductsAdminPage extends StatelessWidget {
         child: Column(children: [
       AppBar(title: Text('Choose'), automaticallyImplyLeading: false),
       ListTile(
+          leading: Icon(Icons.shop),
           title: Text('All Products'),
           onTap: () => _navigateToProductsPage(context))
     ]));

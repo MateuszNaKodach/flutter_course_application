@@ -11,19 +11,29 @@ class ProductsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
       drawer: _buildNavigationDrawer(context),
-      appBar: AppBar(title: Text('EasyList')),
+      appBar: AppBar(
+        title: Text('EasyList'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.favorite),
+            onPressed: () {},
+          )
+        ],
+      ),
       body: ProductManager(this.products));
 
   Widget _buildNavigationDrawer(BuildContext context) {
-    return Drawer(child: Column(
-        children: [
-          AppBar(title: Text('Choose'), automaticallyImplyLeading: false),
-          ListTile(title: Text('Manage Products'), onTap: ()=>_navigateToProductsAdminPage(context))
-        ]
-    ));
+    return Drawer(
+        child: Column(children: [
+      AppBar(title: Text('Choose'), automaticallyImplyLeading: false),
+      ListTile(
+          leading: Icon(Icons.edit),
+          title: Text('Manage Products'),
+          onTap: () => _navigateToProductsAdminPage(context))
+    ]));
   }
 
-  void _navigateToProductsAdminPage(BuildContext context){
+  void _navigateToProductsAdminPage(BuildContext context) {
     Navigator.pushReplacementNamed(context, Routes.ADMIN);
   }
 }

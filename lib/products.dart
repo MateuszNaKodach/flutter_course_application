@@ -46,15 +46,22 @@ class Products extends StatelessWidget {
                     borderRadius: BorderRadius.circular(4.0)),
                 child: Text('Union Square, San Francisco')),
             ButtonBar(alignment: MainAxisAlignment.center, children: [
-              FlatButton(
-                  child: Text('Details'),
-                  onPressed: () =>
-                      Navigator.pushNamed<bool>(context, Routes.PRODUCT(index))
-                          .then((bool value) {
-                        if (value) {
-                          // deleteProduct(index);
-                        }
-                      }))
+              IconButton(
+                icon: Icon(Icons.info),
+                color: Theme.of(context).accentColor,
+                onPressed: () =>
+                    Navigator.pushNamed<bool>(context, Routes.PRODUCT(index))
+                        .then((bool value) {
+                      if (value) {
+                        // deleteProduct(index);
+                      }
+                    }),
+              ),
+              IconButton(
+                icon: Icon(Icons.favorite_border),
+                color: Colors.red,
+                onPressed: () {},
+              ),
             ])
           ],
         ),
