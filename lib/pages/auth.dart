@@ -19,6 +19,7 @@ class _AuthPageState extends State<AuthPage> {
   String _emailValue;
   String _passwordValue;
   bool _acceptTerms = false;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -35,24 +36,35 @@ class _AuthPageState extends State<AuthPage> {
             child: SingleChildScrollView(
               child: Container(
                 width: targetWidth,
-                child: Column(
-                  children: [
-                    _buildEmailTextField(),
-                    SizedBox(height: 10.0),
-                    _buildPasswordTextField(),
-                    _buildAcceptTermsSwitchListTile(),
-                    SizedBox(height: 10.0),
-                    RaisedButton(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      _buildEmailTextField(),
+                      SizedBox(height: 10.0),
+                      _buildPasswordTextField(),
+                      _buildAcceptTermsSwitchListTile(),
+                      SizedBox(height: 10.0),
+                      RaisedButton(
                         color: Theme.of(context).primaryColor,
                         child: Text('LOGIN'),
-                        onPressed: () =>
-                            widget._navigateToProductsPage(context))
-                  ],
+                        onPressed: _submitForm,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
         ));
+  }
+
+  void _submitForm() {
+    if (!_formKey.currentState.validate() || !_acceptTerms) {
+      return null;
+    }
+    _formKey.currentState.save();
+    widget._navigateToProductsPage(context);
   }
 
   SwitchListTile _buildAcceptTermsSwitchListTile() {
@@ -66,23 +78,35 @@ class _AuthPageState extends State<AuthPage> {
         });
   }
 
-  TextField _buildPasswordTextField() {
-    return TextField(
+  TextFormField _buildPasswordTextField() {
+    return TextFormField(
       decoration: InputDecoration(
           labelText: 'Password', filled: true, fillColor: Colors.white),
       obscureText: true,
-      onChanged: (String value) {
+      validator: (String value) {
+        if (value.isEmpty || value.length < 6) {
+          return 'Password invalid';
+        }
+      },
+      onSaved: (String value) {
         _passwordValue = value;
       },
     );
   }
 
-  TextField _buildEmailTextField() {
-    return TextField(
+  TextFormField _buildEmailTextField() {
+    return TextFormField(
       decoration: InputDecoration(
           labelText: 'E-mail', filled: true, fillColor: Colors.white),
       keyboardType: TextInputType.emailAddress,
-      onChanged: (String value) {
+      validator: (String value) {
+        if (value.isEmpty ||
+            !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+                .hasMatch(value)) {
+          return 'Please enter a valid email';
+        }
+      },
+      onSaved: (String value) {
         _emailValue = value;
       },
     );
