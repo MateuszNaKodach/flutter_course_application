@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_course_application/models/product.dart';
+import 'package:flutter_course_application/scoped_models/products.dart';
 import 'package:flutter_course_application/widgets/products/product_card.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 @immutable
 class Products extends StatelessWidget {
-  final List<Product> products;
-
-  Products(this.products);
-
   @override
-  Widget build(BuildContext context) => products.length > 0
-      ? ListView.builder(
-          itemCount: products.length, itemBuilder: _buildProductItem)
-      : Center(child: Text('No products found, please add some.'));
+  Widget build(BuildContext context) => ScopedModelDescendant<ProductsModel>(
+          builder: (BuildContext context, Widget child, ProductsModel model) {
+        return model.products.length > 0
+            ? ListView.builder(
+                itemCount: model.products.length,
+                itemBuilder: _buildProductItem(model.products))
+            : Center(child: Text('No products found, please add some.'));
+      });
 
-  Widget _buildProductItem(BuildContext context, int index) =>
-      ProductCard(product: products[index], productIndex: index);
+  Function(BuildContext, int) _buildProductItem(List<Product> products) =>
+      (BuildContext context, int index) =>
+          ProductCard(product: products[index], productIndex: index);
 }

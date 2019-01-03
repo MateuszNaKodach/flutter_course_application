@@ -1,28 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_course_application/models/product.dart';
 import 'package:flutter_course_application/pages/product_edit.dart';
+import 'package:flutter_course_application/scoped_models/products.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class ProductListPage extends StatelessWidget {
-  final List<Product> products;
-  final Function updateProduct;
-  final Function deleteProduct;
-
-  ProductListPage(this.products, this.updateProduct, this.deleteProduct);
-
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: products.length,
-        itemBuilder: (BuildContext context, int index) {
-          return _buildProductItem(context, products[index]);
-        });
+    return ScopedModelDescendant<ProductsModel>(
+      builder: (BuildContext context, Widget child, ProductsModel model) {
+        return ListView.builder(
+            itemCount: model.products.length,
+            itemBuilder: (BuildContext context, int index) {
+              return _buildProductItem(context, model.products[index], index, model);
+            });
+      },
+    );
   }
 
-  Widget _buildProductItem(BuildContext context, Product product) {
+  Widget _buildProductItem(
+      BuildContext context, Product product, int productIndex, ProductsModel model) {
     return Dismissible(
       key: Key(product.id),
       onDismissed: (DismissDirection direction) {
-        deleteProduct(product: product);
+        model.selectProduct(productIndex);
+        model.deleteProduct();
       },
       direction: DismissDirection.startToEnd,
       background: Container(
@@ -42,23 +44,28 @@ class ProductListPage extends StatelessWidget {
           leading: CircleAvatar(backgroundImage: AssetImage(product.image)),
           title: Text(product.title),
           subtitle: Text('\$${product.price}'),
-          trailing: _buildEditButton(context, product),
+          trailing: _buildEditButton(context, product, productIndex),
         ),
         Divider()
       ]),
     );
   }
 
-  IconButton _buildEditButton(BuildContext context, Product product) {
-    return IconButton(
+  Widget _buildEditButton(
+      BuildContext context, Product product, int productIndex) {
+    return ScopedModelDescendant<ProductsModel>(
+      builder: (BuildContext context, Widget child, ProductsModel model) {
+        return IconButton(
           icon: Icon(Icons.edit),
           onPressed: () {
+            model.selectProduct(productIndex);
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (BuildContext context) {
-              return ProductEditPage(
-                  product: product, updateProduct: updateProduct);
+              return ProductEditPage();
             }));
           },
         );
+      },
+    );
   }
 }

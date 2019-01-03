@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_course_application/main.dart';
 import 'package:flutter_course_application/models/product.dart';
+import 'package:flutter_course_application/scoped_models/products.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class ProductEditPage extends StatefulWidget {
-  final Function addProduct;
-  final Function updateProduct;
-  final Product product;
-
-  ProductEditPage({this.addProduct, this.updateProduct, this.product});
-
   @override
   State createState() {
     return _ProductEditPageState();
@@ -23,71 +19,87 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
   @override
   Widget build(BuildContext context) {
-    final Widget pageContent = _buildPageContent(context);
-    return widget.product == null
-        ? pageContent
-        : Scaffold(
-            appBar: AppBar(title: Text('Edit Product')),
-            body: pageContent,
-          );
+    return ScopedModelDescendant<ProductsModel>(
+        builder: (BuildContext context, Widget child, ProductsModel model) {
+      final Widget pageContent =
+          _buildPageContent(context, model.selectedProduct);
+      return model.selectedProductsIndex == null
+          ? pageContent
+          : Scaffold(
+              appBar: AppBar(title: Text('Edit Product')),
+              body: pageContent,
+            );
+    });
   }
 
-  GestureDetector _buildPageContent(BuildContext context) {
+  GestureDetector _buildPageContent(BuildContext context, Product product) {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.9;
     final double targetPadding = deviceWidth - targetWidth;
     return GestureDetector(
-    onTap: () {
-      FocusScope.of(context).requestFocus(FocusNode());
-    },
-    child: Container(
-      margin: EdgeInsets.all(10.0),
-      child: Form(
-        key: _formKey,
-        child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: targetPadding),
-          children: [
-            _buildTitleTextField(),
-            _buildDescriptionTextField(),
-            _buildPriceTextField(),
-            SizedBox(
-              height: 20.0,
-            ),
-            RaisedButton(
-              color: Theme.of(context).accentColor,
-              textColor: Colors.white,
-              child: Text('Save'),
-              onPressed: () => _submitForm(context),
-            )
-          ],
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: Container(
+        margin: EdgeInsets.all(10.0),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            padding: EdgeInsets.symmetric(horizontal: targetPadding),
+            children: [
+              _buildTitleTextField(product),
+              _buildDescriptionTextField(product),
+              _buildPriceTextField(product),
+              SizedBox(
+                height: 20.0,
+              ),
+              _buildSubmitButton(product)
+            ],
+          ),
         ),
       ),
-    ),
-  );
+    );
   }
 
-  void _submitForm(BuildContext context) {
+  Widget _buildSubmitButton(Product product) {
+    return ScopedModelDescendant<ProductsModel>(
+      builder: (BuildContext context, Widget child, ProductsModel model) =>
+          RaisedButton(
+            color: Theme.of(context).accentColor,
+            textColor: Colors.white,
+            child: Text('Save'),
+            onPressed: () => _submitForm(model.addProduct,
+                model.updateProductByIndex, model.selectedProductsIndex),
+          ),
+    );
+  }
+
+  void _submitForm(
+      Function(Product) addProduct, Function(int, Product) updateProduct,
+      [int selectedProductIndex]) {
     if (!_formKey.currentState.validate()) {
       return null;
     }
     _formKey.currentState.save();
-    if(widget.product == null){
-      widget.addProduct(Product(_titleValue,
+    if (selectedProductIndex == null) {
+      addProduct(Product(_titleValue,
           description: _descriptionValue, price: _priceValue));
-    }else{
-      widget.updateProduct(Product.withId(widget.product.id, title: _titleValue,
-          description: _descriptionValue, price: _priceValue));
+    } else {
+      updateProduct(
+          selectedProductIndex,
+          Product(_titleValue,
+              description: _descriptionValue, price: _priceValue));
     }
     Navigator.pushReplacementNamed(context, Routes.PRODUCTS);
   }
 
-  TextFormField _buildPriceTextField() {
+  TextFormField _buildPriceTextField(Product product) {
     return TextFormField(
       decoration: InputDecoration(
         labelText: 'Product Price',
       ),
       keyboardType: TextInputType.number,
-      initialValue: widget.product?.price?.toString() ?? '',
+      initialValue: product?.price?.toString() ?? '',
       validator: (String value) {
         if (value.isEmpty ||
             !RegExp(r'^(?:[1-9]\d*|0)?(?:\.\d+)?$').hasMatch(value)) {
@@ -100,13 +112,13 @@ class _ProductEditPageState extends State<ProductEditPage> {
     );
   }
 
-  TextFormField _buildDescriptionTextField() {
+  TextFormField _buildDescriptionTextField(Product product) {
     return TextFormField(
       decoration: InputDecoration(
         labelText: 'Product Description',
       ),
       maxLines: 4,
-      initialValue: widget.product?.description ?? '',
+      initialValue: product?.description ?? '',
       validator: (String value) {
         if (value.isEmpty || value.length < 10) {
           return 'Description is required and should be 10+ characters long.';
@@ -118,13 +130,13 @@ class _ProductEditPageState extends State<ProductEditPage> {
     );
   }
 
-  TextFormField _buildTitleTextField() {
+  TextFormField _buildTitleTextField(Product product) {
     return TextFormField(
       decoration: InputDecoration(
         labelText: 'Product Title',
       ),
       autofocus: true,
-      initialValue: widget.product?.title ?? '',
+      initialValue: product?.title ?? '',
       validator: (String value) {
         if (value.isEmpty || value.length < 5) {
           return 'Title is required and should be 5+ characters long.';

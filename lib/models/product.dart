@@ -1,3 +1,5 @@
+import 'package:meta/meta.dart';
+
 class Product {
   final String title;
   final String description;
@@ -6,7 +8,7 @@ class Product {
   final String id;
 
   Product(this.title,
-      {this.description, this.price = 0.0, this.image = 'assets/food.jpg'})
+      {@required this.description, this.price = 0.0, this.image = 'assets/food.jpg'})
       : id = new DateTime.now().millisecondsSinceEpoch.toString();
 
   Product.withId(this.id,
