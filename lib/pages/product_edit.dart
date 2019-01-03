@@ -23,43 +23,47 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
   @override
   Widget build(BuildContext context) {
-    final double deviceWidth = MediaQuery.of(context).size.width;
-    final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.9;
-    final double targetPadding = deviceWidth - targetWidth;
-    final Widget pageContent = GestureDetector(
-      onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
-      },
-      child: Container(
-        margin: EdgeInsets.all(10.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            padding: EdgeInsets.symmetric(horizontal: targetPadding),
-            children: [
-              _buildTitleTextField(),
-              _buildDescriptionTextField(),
-              _buildPriceTextField(),
-              SizedBox(
-                height: 20.0,
-              ),
-              RaisedButton(
-                color: Theme.of(context).accentColor,
-                textColor: Colors.white,
-                child: Text('Save'),
-                onPressed: () => _submitForm(context),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+    final Widget pageContent = _buildPageContent(context);
     return widget.product == null
         ? pageContent
         : Scaffold(
             appBar: AppBar(title: Text('Edit Product')),
             body: pageContent,
           );
+  }
+
+  GestureDetector _buildPageContent(BuildContext context) {
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.9;
+    final double targetPadding = deviceWidth - targetWidth;
+    return GestureDetector(
+    onTap: () {
+      FocusScope.of(context).requestFocus(FocusNode());
+    },
+    child: Container(
+      margin: EdgeInsets.all(10.0),
+      child: Form(
+        key: _formKey,
+        child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: targetPadding),
+          children: [
+            _buildTitleTextField(),
+            _buildDescriptionTextField(),
+            _buildPriceTextField(),
+            SizedBox(
+              height: 20.0,
+            ),
+            RaisedButton(
+              color: Theme.of(context).accentColor,
+              textColor: Colors.white,
+              child: Text('Save'),
+              onPressed: () => _submitForm(context),
+            )
+          ],
+        ),
+      ),
+    ),
+  );
   }
 
   void _submitForm(BuildContext context) {

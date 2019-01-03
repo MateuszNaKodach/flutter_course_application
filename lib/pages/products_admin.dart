@@ -35,7 +35,7 @@ class ProductsAdminPage extends StatelessWidget {
 
   Widget _buildPageBody(BuildContext context) {
     return TabBarView(
-        children: [ProductEditPage(addProduct: addProduct), ProductListPage(products, updateProduct)]);
+        children: [ProductEditPage(addProduct: addProduct), ProductListPage(products, updateProduct, deleteProduct)]);
   }
 
   Widget _buildNavigationDrawer(BuildContext context) {

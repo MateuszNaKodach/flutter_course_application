@@ -56,9 +56,13 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  void _deleteProduct(int index) {
+  void _deleteProduct({int index, Product product}) {
     setState(() {
-      _products.removeAt(index);
+      if(index!=null){
+        _products.removeAt(index);
+      }else if(product!=null){
+        _products.removeAt(_products.indexWhere((Product p) => p.id == product.id));
+      }
     });
   }
 
