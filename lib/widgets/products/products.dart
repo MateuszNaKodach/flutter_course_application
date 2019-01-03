@@ -9,10 +9,10 @@ class Products extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ScopedModelDescendant<ProductsModel>(
           builder: (BuildContext context, Widget child, ProductsModel model) {
-        return model.products.length > 0
+        return model.displayedProducts.length > 0
             ? ListView.builder(
-                itemCount: model.products.length,
-                itemBuilder: _buildProductItem(model.products))
+                itemCount: model.displayedProducts.length,
+                itemBuilder: _buildProductItem(model.displayedProducts))
             : Center(child: Text('No products found, please add some.'));
       });
 

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_course_application/main.dart';
 import 'package:flutter_course_application/models/product.dart';
+import 'package:flutter_course_application/scoped_models/products.dart';
 import 'package:flutter_course_application/widgets/products/address_tag.dart';
 import 'package:flutter_course_application/widgets/products/price_tag.dart';
 import 'package:flutter_course_application/widgets/ui_elements/title_default.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -36,22 +38,33 @@ class ProductCard extends StatelessWidget {
 
   ButtonBar _buildActionButtons(BuildContext context) {
     return ButtonBar(alignment: MainAxisAlignment.center, children: [
-            IconButton(
-              icon: Icon(Icons.info),
-              color: Theme.of(context).accentColor,
-              onPressed: () => Navigator.pushNamed<bool>(
-                          context, Routes.PRODUCT(productIndex))
-                      .then((bool value) {
-                    if (value) {
-                      // deleteProduct(index);
-                    }
-                  }),
-            ),
-            IconButton(
-              icon: Icon(Icons.favorite_border),
-              color: Colors.red,
-              onPressed: () {},
-            ),
-          ]);
+      IconButton(
+        icon: Icon(Icons.info),
+        color: Theme.of(context).accentColor,
+        onPressed: () =>
+            Navigator.pushNamed<bool>(context, Routes.PRODUCT(productIndex))
+                .then((bool value) {
+              if (value) {
+                // deleteProduct(index);
+              }
+            }),
+      ),
+      _buildFavoriteToggleButton(),
+    ]);
+  }
+
+  Widget _buildFavoriteToggleButton() {
+    return ScopedModelDescendant<ProductsModel>(
+      builder: (BuildContext context, Widget child, ProductsModel model) {
+        return IconButton(
+          icon: Icon(product.isFavorite ? Icons.favorite : Icons.favorite_border),
+          color: Colors.red,
+          onPressed: () {
+            model.selectProduct(productIndex);
+            model.toggleProductFavoriteStatus();
+          },
+        );
+      },
+    );
   }
 }

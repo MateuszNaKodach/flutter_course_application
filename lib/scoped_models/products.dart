@@ -4,17 +4,36 @@ import 'package:scoped_model/scoped_model.dart';
 class ProductsModel extends Model {
   List<Product> _products = [];
   int _selectedProductIndex;
+  DisplayMode _displayMode = DisplayMode.ALL;
 
   List<Product> get products {
     return List.from(_products);
   }
 
-  int get selectedProductsIndex {
+  List<Product> get displayedProducts {
+    return List.from(
+      _displayMode == DisplayMode.ALL
+          ? _products
+          : _products.where((Product p) => p.isFavorite),
+    );
+  }
+
+  int get selectedProductIndex {
     return _selectedProductIndex;
   }
 
+  bool get isShowFavoritesDisplayMode {
+    return _displayMode == DisplayMode.ONLY_FAVORITES;
+  }
+
+  DisplayMode get displayMode {
+    return _displayMode;
+  }
+
   Product get selectedProduct {
-    return _selectedProductIndex == null ? null : _products[_selectedProductIndex];
+    return _selectedProductIndex == null
+        ? null
+        : _products[_selectedProductIndex];
   }
 
   void addProduct(Product product) {
@@ -45,7 +64,27 @@ class ProductsModel extends Model {
     _selectedProductIndex = null;
   }
 
+  void toggleProductFavoriteStatus() {
+    _products[_selectedProductIndex] = selectedProduct.toggleFavorite();
+    _selectedProductIndex = null;
+    notifyListeners();
+  }
+
   void selectProduct(int index) {
     _selectedProductIndex = index;
   }
+
+  void toggleDisplayMode() {
+    if (_displayMode == DisplayMode.ALL) {
+      _displayMode = DisplayMode.ONLY_FAVORITES;
+    } else if (_displayMode == DisplayMode.ONLY_FAVORITES) {
+      _displayMode = DisplayMode.ALL;
+    }
+    notifyListeners();
+  }
+}
+
+enum DisplayMode {
+  ALL,
+  ONLY_FAVORITES,
 }

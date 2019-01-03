@@ -23,7 +23,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
         builder: (BuildContext context, Widget child, ProductsModel model) {
       final Widget pageContent =
           _buildPageContent(context, model.selectedProduct);
-      return model.selectedProductsIndex == null
+      return model.selectedProductIndex == null
           ? pageContent
           : Scaffold(
               appBar: AppBar(title: Text('Edit Product')),
@@ -69,7 +69,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
             textColor: Colors.white,
             child: Text('Save'),
             onPressed: () => _submitForm(model.addProduct,
-                model.updateProductByIndex, model.selectedProductsIndex),
+                model.updateProductByIndex, model.selectedProductIndex),
           ),
     );
   }
