@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_course_application/models/product.dart';
+import 'package:flutter_course_application/pages/product_edit.dart';
 
 class ProductListPage extends StatelessWidget {
   final List<Product> products;
+  final Function updateProduct;
 
-  ProductListPage(this.products);
+  ProductListPage(this.products, this.updateProduct);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,12 @@ class ProductListPage extends StatelessWidget {
       title: Text(product.title),
       trailing: IconButton(
         icon: Icon(Icons.edit),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (BuildContext context) {
+                return ProductEditPage(product: product, updateProduct: updateProduct);
+              }));
+        },
       ),
     );
   }

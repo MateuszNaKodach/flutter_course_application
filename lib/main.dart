@@ -23,13 +23,13 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
             brightness: Brightness.light,
             primarySwatch: Colors.deepOrange,
-            accentColor: Colors.deepPurple
-        ),
+            accentColor: Colors.deepPurple),
         //home: AuthPage(),
         routes: {
           Routes.AUTH: (BuildContext context) => AuthPage(),
           Routes.PRODUCTS: (BuildContext context) => ProductsPage(_products),
-          Routes.ADMIN: (BuildContext context) => ProductsAdminPage(_addProduct, _deleteProduct, _products)
+          Routes.ADMIN: (BuildContext context) =>
+              ProductsAdminPage(_addProduct, _updateProduct, _deleteProduct, _products)
         },
         onGenerateRoute: (RouteSettings settings) {
           final List<String> pathElements = settings.name.split('/');
@@ -39,15 +39,14 @@ class _MyAppState extends State<MyApp> {
           if (pathElements[1] == 'product') {
             final int index = int.parse(pathElements[2]);
             return MaterialPageRoute<bool>(
-                builder: (BuildContext context) => ProductPage(
-                    _products[index]));
+                builder: (BuildContext context) =>
+                    ProductPage(_products[index]));
           }
           return null;
         },
         onUnknownRoute: (RouteSettings settings) {
           return MaterialPageRoute(
-              builder: (BuildContext context) =>
-                  ProductsPage(_products));
+              builder: (BuildContext context) => ProductsPage(_products));
         });
   }
 
@@ -60,6 +59,12 @@ class _MyAppState extends State<MyApp> {
   void _deleteProduct(int index) {
     setState(() {
       _products.removeAt(index);
+    });
+  }
+
+  void _updateProduct(Product product) {
+    setState(() {
+      _products[_products.indexWhere((Product p) => p.id == product.id)] = product;
     });
   }
 }
