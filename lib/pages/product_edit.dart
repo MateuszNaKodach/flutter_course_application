@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_course_application/main.dart';
 import 'package:flutter_course_application/models/product.dart';
-import 'package:flutter_course_application/scoped_models/products.dart';
+import 'package:flutter_course_application/scoped_models/main.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class ProductEditPage extends StatefulWidget {
@@ -19,8 +19,8 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<ProductsModel>(
-        builder: (BuildContext context, Widget child, ProductsModel model) {
+    return ScopedModelDescendant<MainModel>(
+        builder: (BuildContext context, Widget child, MainModel model) {
       final Widget pageContent =
           _buildPageContent(context, model.selectedProduct);
       return model.selectedProductIndex == null
@@ -62,8 +62,8 @@ class _ProductEditPageState extends State<ProductEditPage> {
   }
 
   Widget _buildSubmitButton(Product product) {
-    return ScopedModelDescendant<ProductsModel>(
-      builder: (BuildContext context, Widget child, ProductsModel model) =>
+    return ScopedModelDescendant<MainModel>(
+      builder: (BuildContext context, Widget child, MainModel model) =>
           RaisedButton(
             color: Theme.of(context).accentColor,
             textColor: Colors.white,
@@ -85,6 +85,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
       addProduct(Product(_titleValue,
           description: _descriptionValue, price: _priceValue));
     } else {
+      //TODO: Add keeping another properties from updating product
       updateProduct(
           selectedProductIndex,
           Product(_titleValue,

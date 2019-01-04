@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_course_application/main.dart';
 import 'package:flutter_course_application/models/product.dart';
-import 'package:flutter_course_application/scoped_models/products.dart';
+import 'package:flutter_course_application/scoped_models/main.dart';
 import 'package:flutter_course_application/widgets/products/address_tag.dart';
 import 'package:flutter_course_application/widgets/products/price_tag.dart';
 import 'package:flutter_course_application/widgets/ui_elements/title_default.dart';
@@ -31,6 +31,7 @@ class ProductCard extends StatelessWidget {
               ),
             ),
             AddressTag(address: 'Union Square, San Francisco'),
+            Text(product.userEmail),
             _buildActionButtons(context)
           ],
         ),
@@ -54,8 +55,8 @@ class ProductCard extends StatelessWidget {
   }
 
   Widget _buildFavoriteToggleButton() {
-    return ScopedModelDescendant<ProductsModel>(
-      builder: (BuildContext context, Widget child, ProductsModel model) {
+    return ScopedModelDescendant<MainModel>(
+      builder: (BuildContext context, Widget child, MainModel model) {
         return IconButton(
           icon: Icon(product.isFavorite ? Icons.favorite : Icons.favorite_border),
           color: Colors.red,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_course_application/main.dart';
-import 'package:flutter_course_application/models/product.dart';
 import 'package:flutter_course_application/pages/product_edit.dart';
 import 'package:flutter_course_application/pages/product_list.dart';
 

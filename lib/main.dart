@@ -4,7 +4,7 @@ import 'package:flutter_course_application/pages/auth.dart';
 import 'package:flutter_course_application/pages/product.dart';
 import 'package:flutter_course_application/pages/products.dart';
 import 'package:flutter_course_application/pages/products_admin.dart';
-import 'package:flutter_course_application/scoped_models/products.dart';
+import 'package:flutter_course_application/scoped_models/main.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 void main() => runApp(MyApp());
@@ -21,8 +21,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModel<ProductsModel>(
-      model: ProductsModel(),
+    return ScopedModel<MainModel>(
+      model: MainModel(),
       child: MaterialApp(
           theme: ThemeData(
               brightness: Brightness.light,

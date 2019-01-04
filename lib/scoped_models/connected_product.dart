@@ -1,12 +1,30 @@
 import 'package:flutter_course_application/models/product.dart';
+import 'package:flutter_course_application/models/user.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-class ProductsModel extends Model {
+mixin ConnectedProductsModel on Model {
   List<Product> _products = [];
-  int _selectedProductIndex;
+  int _selProductIndex;
+  User _authenticatedUser;
+
+  void addProduct(Product product) {
+    _products.add(product.fromUser(_authenticatedUser));
+    _deselectProduct();
+  }
+}
+
+mixin UserModel on ConnectedProductsModel {
+
+  void login(String email, String password) {
+    _authenticatedUser =
+        User(id: 'sadasdqweqwd', email: email, password: password);
+  }
+}
+
+mixin ProductsModel on ConnectedProductsModel {
   DisplayMode _displayMode = DisplayMode.ALL;
 
-  List<Product> get products {
+  List<Product> get allProducts {
     return List.from(_products);
   }
 
@@ -19,7 +37,7 @@ class ProductsModel extends Model {
   }
 
   int get selectedProductIndex {
-    return _selectedProductIndex;
+    return _selProductIndex;
   }
 
   bool get isShowFavoritesDisplayMode {
@@ -31,14 +49,9 @@ class ProductsModel extends Model {
   }
 
   Product get selectedProduct {
-    return _selectedProductIndex == null
+    return _selProductIndex == null
         ? null
-        : _products[_selectedProductIndex];
-  }
-
-  void addProduct(Product product) {
-    _products.add(product);
-    _selectedProductIndex = null;
+        : _products[_selProductIndex];
   }
 
   void deleteProduct({int index, Product product}) {
@@ -48,30 +61,33 @@ class ProductsModel extends Model {
       _products
           .removeAt(_products.indexWhere((Product p) => p.id == product.id));
     } else {
-      _products.removeAt(_selectedProductIndex);
+      _products.removeAt(_selProductIndex);
     }
-    _selectedProductIndex = null;
+    _deselectProduct();
   }
 
   void updateProduct(Product product) {
     _products[_products.indexWhere((Product p) => p.id == product.id)] =
         product;
-    _selectedProductIndex = null;
+    _deselectProduct();
   }
 
   void updateProductByIndex(int index, Product product) {
     _products[index] = product;
-    _selectedProductIndex = null;
+    _deselectProduct();
   }
 
   void toggleProductFavoriteStatus() {
-    _products[_selectedProductIndex] = selectedProduct.toggleFavorite();
-    _selectedProductIndex = null;
+    _products[_selProductIndex] = selectedProduct.toggleFavorite();
+    _deselectProduct();
     notifyListeners();
   }
 
   void selectProduct(int index) {
-    _selectedProductIndex = index;
+    _selProductIndex = index;
+    if(_selProductIndex != null){
+      notifyListeners();
+    }
   }
 
   void toggleDisplayMode() {
@@ -82,7 +98,13 @@ class ProductsModel extends Model {
     }
     notifyListeners();
   }
+
+  void _deselectProduct() {
+    _selProductIndex = null;
+  }
+
 }
+
 
 enum DisplayMode {
   ALL,
