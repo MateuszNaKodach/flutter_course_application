@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_course_application/main.dart';
-import 'package:flutter_course_application/models/product.dart';
 import 'package:flutter_course_application/pages/product_edit.dart';
 import 'package:flutter_course_application/pages/product_list.dart';
 
 class ProductsAdminPage extends StatelessWidget {
-  final Function addProduct;
-  final Function updateProduct;
-  final Function deleteProduct;
-  final List<Product> products;
-
-  ProductsAdminPage(this.addProduct, this.updateProduct, this.deleteProduct, this.products);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +28,7 @@ class ProductsAdminPage extends StatelessWidget {
 
   Widget _buildPageBody(BuildContext context) {
     return TabBarView(
-        children: [ProductEditPage(addProduct: addProduct), ProductListPage(products, updateProduct, deleteProduct)]);
+        children: [ProductEditPage(), ProductListPage()]);
   }
 
   Widget _buildNavigationDrawer(BuildContext context) {

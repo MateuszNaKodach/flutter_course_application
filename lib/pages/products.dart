@@ -1,26 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_course_application/main.dart';
-import 'package:flutter_course_application/models/product.dart';
+import 'package:flutter_course_application/scoped_models/main.dart';
 import 'package:flutter_course_application/widgets/products/products.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class ProductsPage extends StatelessWidget {
-  final List<Product> products;
-
-  ProductsPage(this.products);
-
   @override
   Widget build(BuildContext context) => Scaffold(
       drawer: _buildNavigationDrawer(context),
       appBar: AppBar(
         title: Text('EasyList'),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.favorite),
-            onPressed: () {},
+          ScopedModelDescendant<MainModel>(
+            builder: (BuildContext context, Widget child, MainModel model) {
+              return IconButton(
+                icon: Icon(model.isShowFavoritesDisplayMode
+                    ? Icons.favorite
+                    : Icons.favorite_border),
+                onPressed: () {
+                  model.toggleDisplayMode();
+                },
+              );
+            },
           )
         ],
       ),
-      body: Products(this.products));
+      body: Products());
 
   Widget _buildNavigationDrawer(BuildContext context) {
     return Drawer(

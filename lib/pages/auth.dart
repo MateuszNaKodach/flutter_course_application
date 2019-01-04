@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_course_application/main.dart';
+import 'package:flutter_course_application/scoped_models/main.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 /**
  * Why whole UI is in method createState?
@@ -45,11 +47,15 @@ class _AuthPageState extends State<AuthPage> {
                       _buildPasswordTextField(),
                       _buildAcceptTermsSwitchListTile(),
                       SizedBox(height: 10.0),
-                      RaisedButton(
-                        color: Theme.of(context).primaryColor,
-                        child: Text('LOGIN'),
-                        onPressed: _submitForm,
-                      )
+                      ScopedModelDescendant<MainModel>(builder:
+                          (BuildContext context, Widget child,
+                              MainModel model) {
+                        return RaisedButton(
+                          color: Theme.of(context).primaryColor,
+                          child: Text('LOGIN'),
+                          onPressed: () => _submitForm(model.login),
+                        );
+                      })
                     ],
                   ),
                 ),
@@ -59,11 +65,12 @@ class _AuthPageState extends State<AuthPage> {
         ));
   }
 
-  void _submitForm() {
+  void _submitForm(Function(String, String) login) {
     if (!_formKey.currentState.validate() || !_acceptTerms) {
       return null;
     }
     _formKey.currentState.save();
+    login(_emailValue, _passwordValue);
     widget._navigateToProductsPage(context);
   }
 
