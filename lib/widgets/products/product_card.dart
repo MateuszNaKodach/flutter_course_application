@@ -18,7 +18,7 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) => Card(
         child: Column(
           children: <Widget>[
-            Image.asset(product.image),
+            Image.network(product.image),
             Padding(
               padding: EdgeInsets.only(top: 10.0),
               child: Row(
@@ -31,7 +31,7 @@ class ProductCard extends StatelessWidget {
               ),
             ),
             AddressTag(address: 'Union Square, San Francisco'),
-            Text(product.userEmail),
+            Text(product?.userEmail ?? 'Anonymous User'),
             _buildActionButtons(context)
           ],
         ),

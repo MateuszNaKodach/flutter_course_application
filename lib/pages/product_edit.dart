@@ -64,13 +64,15 @@ class _ProductEditPageState extends State<ProductEditPage> {
   Widget _buildSubmitButton(Product product) {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) =>
-          RaisedButton(
-            color: Theme.of(context).accentColor,
-            textColor: Colors.white,
-            child: Text('Save'),
-            onPressed: () => _submitForm(model.addProduct,
-                model.updateProductByIndex, model.selectedProductIndex),
-          ),
+          model.isLoading
+              ? Center(child:CircularProgressIndicator())
+              : RaisedButton(
+                  color: Theme.of(context).accentColor,
+                  textColor: Colors.white,
+                  child: Text('Save'),
+                  onPressed: () => _submitForm(model.addProduct,
+                      model.updateProductByIndex, model.selectedProductIndex),
+                ),
     );
   }
 
@@ -83,7 +85,8 @@ class _ProductEditPageState extends State<ProductEditPage> {
     _formKey.currentState.save();
     if (selectedProductIndex == null) {
       addProduct(Product(_titleValue,
-          description: _descriptionValue, price: _priceValue));
+              description: _descriptionValue, price: _priceValue))
+          .then((_) => Navigator.pushReplacementNamed(context, Routes.PRODUCTS));
     } else {
       //TODO: Add keeping another properties from updating product
       updateProduct(
@@ -91,7 +94,6 @@ class _ProductEditPageState extends State<ProductEditPage> {
           Product(_titleValue,
               description: _descriptionValue, price: _priceValue));
     }
-    Navigator.pushReplacementNamed(context, Routes.PRODUCTS);
   }
 
   TextFormField _buildPriceTextField(Product product) {

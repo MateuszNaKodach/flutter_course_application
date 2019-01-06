@@ -14,7 +14,7 @@ class Product {
   Product(this.title,
       {@required this.description,
       this.price = 0.0,
-      this.image = 'assets/food.jpg',
+      this.image = 'https://schrammsflowers.com/wp-content/uploads/2017/12/chocolate.jpg',
       this.isFavorite = false})
       : id = new DateTime.now().millisecondsSinceEpoch.toString(),
         userEmail = '',
@@ -24,7 +24,7 @@ class Product {
       {this.title,
       this.description,
       this.price,
-      this.image = 'assets/food.jpg',
+      this.image = 'https://schrammsflowers.com/wp-content/uploads/2017/12/chocolate.jpg',
       this.isFavorite = false,
       this.userEmail = '',
       this.userId = ''});
@@ -33,7 +33,7 @@ class Product {
       {this.title,
       this.description,
       this.price,
-      this.image = 'assets/food.jpg',
+      this.image = 'https://schrammsflowers.com/wp-content/uploads/2017/12/chocolate.jpg',
       this.isFavorite = false,
       this.userEmail,
       this.userId});
@@ -46,8 +46,21 @@ class Product {
       price: this.price,
       image: this.image,
       isFavorite: this.isFavorite,
-      userEmail: user.email,
-      userId: user.id,
+      userEmail: user?.email,
+      userId: user?.id,
+    );
+  }
+
+  Product withId(String id) {
+    return Product.withId(
+      id,
+      title: this.title,
+      description: this.description,
+      price: this.price,
+      image: this.image,
+      isFavorite: this.isFavorite,
+      userEmail: this.userEmail,
+      userId: this.userId,
     );
   }
 
